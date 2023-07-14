@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "mongodb": "^5.7.0",
+    "venom-bot": "^5.0.11"
+  }
+}
