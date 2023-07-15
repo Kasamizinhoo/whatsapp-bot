@@ -33,12 +33,6 @@ function start(client) {
       description: "Tenha uma contabilidade sólida e precisa para tomar decisões estratégicas.",
       handler: "Gustavo" // obvio
     },
-    {
-      number: 0,
-      title: "Receber a lista novamente",
-      description: "Caso queira receber a lista de opções novamente.",
-      handler: "lista" // identificador para receber a lista novamente
-    }
   ];
 
   let state = {}; // criando variável para armazenar os clientes já atendidos
@@ -79,15 +73,14 @@ ${menu.map((item) => `${item.number}. ${item.title}: ${item.description}`).join(
         .catch((error) => {
           console.error('Erro ao enviar a mensagem: ', error);
         });
-    } else if (currentState.transferido) {
+    } 
+    if (currentState.transferido) {
       const transferMessage = `Você foi transferido para o setor correspondente. Aguarde até ser atendido.`;
       client
         .sendText(message.from, transferMessage)
         .then((result) => {
           console.log('Resultado: ', result);
           currentState.transferido = false; // reinicia o status de transferido
-          clearTimeout(currentState.timeout); // limpa o timeout atual, se houver
-          currentState.timeout = null; // reseta o timeout
           currentState.timeout = setTimeout(() => {
             currentState.timeout = null; // remove o timeout após 1 minuto
           }, 1 * 60 * 1000); // define o timeout para 1 minuto
@@ -95,8 +88,15 @@ ${menu.map((item) => `${item.number}. ${item.title}: ${item.description}`).join(
         .catch((error) => {
           console.error('Erro ao enviar a mensagem: ', error);
         });
-    } else if (selectedOption >= 1 && selectedOption <= menu.length) {
+    }
+        
+     else if (selectedOption >= 1 && selectedOption <= menu.length) {
       const option = menu.find((item) => item.number === selectedOption);
+
+      if (currentState.transferido || currentState.timeout) {
+        // Se o cliente já foi transferido ou se o timeout está ativo, o bot não responde
+        return;
+      }
 
       if (option.handler === "lista") {
         currentState.listaEnviada = false; // marca a lista como não enviada
@@ -132,21 +132,70 @@ Aguarde um momento, ${handlerName}, responsável pelo departamento, irá respond
           });
       }
     }
-
+  
+      // Verificar se o cliente enviou uma mensagem após o timeout
+      if (currentState.timeout) {
+        // Cliente enviou uma mensagem após o timeout
+      
+        // tratamento da mensagem recebida apos o timeout
+        currentState.timeout = null; // reseta o timeout
+        currentState.stopMessaging = true; // parar de enviar mensagens
+        const response = `Por favor, aguarde até ser atendido e não insista.`;
+        client
+          .sendText(message.from, response)
+          .then((result) => {
+            console.log('Resultado: ', result);
+            currentState.stopMessaging = true; // permitir enviar mensagens novamente
+            currentState.listaEnviada = false; // parcar a lista como não enviada
+            setTimeout(() => { // adicione esta linha
+              currentState.stopMessaging = false; // adicione esta linha
+            }, 1 * 60 * 1000); // adicione esta linha
+          })
+          .catch((error) => {
+            console.error('Erro ao enviar a mensagem: ', error.message);
+            currentState.stopMessaging = false; // Permitir enviar mensagens novamente
+            currentState.listaEnviada = false; // Marcar a lista como não enviada
+          });
+      }
     saveCustomerData(message.from, message.sender.pushname, currentState.departamento);
   });
-}
 
-function saveCustomerData(number, name, department) {
-  const data = {
-    name: name,
-    number: number,
-    department: department || "Aguardando atendimento"
-  };
 
-  fs.appendFile('customer_data.json', JSON.stringify(data) + "\n", (err) => {
-    if (err) {
-      console.error('Erro ao salvar os dados do cliente:', err);
-    }
-  });
-}
+  function saveCustomerData(number, name, department) {
+    const data = {
+      name: name,
+      number: number,
+      department: department || "Aguardando atendimento",
+      DataDeTransferencia: new Date() // Adiciona o horário da transferência
+    };
+  
+    fs.readFile('customer_data.json', 'utf8', (err, fileData) => {
+      if (err) {
+        console.error('Erro ao ler o arquivo customer_data.json:', err);
+        return;
+      }
+  
+      let jsonData = fileData.trim();
+      let jsonArray = [];
+  
+      if (jsonData !== '') {
+        try {
+          jsonArray = JSON.parse(jsonData); // Tentar fazer o parse do JSON existente
+        } catch (parseError) {
+          console.error('Erro ao fazer o parse do arquivo customer_data.json:', parseError);
+          return;
+        }
+      }
+  
+      jsonArray.push(data); // Adicionar o novo objeto JSON ao array
+  
+      jsonData = JSON.stringify(jsonArray, null, 2); // Converter o array para JSON formatado com 2 espaços de indentação
+  
+      fs.writeFile('customer_data.json', jsonData, (err) => {
+        if (err) {
+          console.error('Erro ao salvar os dados do cliente:', err);
+        }
+      });
+    });
+  }
+}  
