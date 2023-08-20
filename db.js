@@ -52,3 +52,8 @@ async function importData() {
 
 // Chama a função para importar os dados
 importData();
+
+
+setTimeout(() => {
+  console.log('Pressione qualquer tecla para sair...');
+}, 15000);

@@ -1,0 +1,29 @@
+2023/08/20-16:55:00.808 23fc Reusing MANIFEST C:\Users\akari\Documents\nya\コーヒー\whatsapp-bot\tokens\Pagnan\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2023/08/20-16:55:00.809 23fc Recovering log #110
+2023/08/20-16:55:00.835 23fc Reusing old log C:\Users\akari\Documents\nya\コーヒー\whatsapp-bot\tokens\Pagnan\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000110.log 
+2023/08/20-16:55:00.835 23fc Delete type=2 #106
+2023/08/20-16:55:00.836 23fc Delete type=2 #107
+2023/08/20-16:55:00.836 23fc Delete type=2 #108
+2023/08/20-16:55:00.836 23fc Delete type=2 #111
+2023/08/20-16:55:21.224 760 Level-0 table #117: started
+2023/08/20-16:55:21.415 760 Level-0 table #117: 1145922 bytes OK
+2023/08/20-16:55:21.998 760 Delete type=0 #110
+2023/08/20-16:55:22.220 16a4 Compacting 1@1 + 3@2 files
+2023/08/20-16:55:22.734 16a4 Generated table #118@1: 84315 keys, 2233970 bytes
+2023/08/20-16:55:23.016 16a4 Generated table #119@1: 42158 keys, 2313438 bytes
+2023/08/20-16:55:23.423 16a4 Generated table #120@1: 25853 keys, 460243 bytes
+2023/08/20-16:55:23.423 16a4 Compacted 1@1 + 3@2 files => 5007651 bytes
+2023/08/20-16:55:23.540 16a4 compacted to: files[ 0 0 3 0 0 0 0 ]
+2023/08/20-16:55:24.552 16a4 Level-0 table #122: started
+2023/08/20-16:55:24.873 16a4 Level-0 table #122: 1201120 bytes OK
+2023/08/20-16:55:25.021 16a4 Delete type=2 #112
+2023/08/20-16:55:25.021 16a4 Delete type=2 #113
+2023/08/20-16:55:25.021 16a4 Delete type=2 #114
+2023/08/20-16:55:25.021 16a4 Delete type=0 #116
+2023/08/20-16:55:25.021 16a4 Delete type=2 #117
+2023/08/20-16:55:25.024 23fc Compacting 1@1 + 3@2 files
+2023/08/20-16:55:25.351 23fc Generated table #123@1: 83521 keys, 2232964 bytes
+2023/08/20-16:55:25.657 23fc Generated table #124@1: 36926 keys, 2310114 bytes
+2023/08/20-16:55:25.849 23fc Generated table #125@1: 35243 keys, 679337 bytes
+2023/08/20-16:55:25.849 23fc Compacted 1@1 + 3@2 files => 5222415 bytes
+2023/08/20-16:55:25.894 23fc compacted to: files[ 0 0 3 0 0 0 0 ]
